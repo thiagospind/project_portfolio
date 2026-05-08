@@ -106,5 +106,13 @@ Adotei essa estratégia pra evitar que o código ficasse acoplado ao PosgreSql, 
 ```powershell
 .\mvnw.cmd test
 ```
+### JaCoCo
+Utilizei o JaCoCo para medir a cobertura de testes e exclui /controller, /repository e /enum, visto que 
+não é comum implementação de testes unitários nesses casos.
+
+Para visualizar a cobertura dos testes em percentual, após rodar os testes:
+```
+/target/site/jacoco/index.html
+```
 
 Configuração de cobertura (`pom.xml`) **exclui** `**/controller/**`, `**/repository/**` e `**/enums/**`, focando a métrica em **regras de negócio** (services), conforme exigência do desafio (≥70%).
