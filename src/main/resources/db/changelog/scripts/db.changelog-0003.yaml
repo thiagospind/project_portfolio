@@ -1,0 +1,56 @@
+databaseChangeLog:
+  - changeSet:
+      id: "0003"
+      author: Thiago Spindola
+      comment: Create the project<->member allocation join table.
+      changes:
+        - createTable:
+            tableName: project_member_allocation
+            columns:
+              - column:
+                    name: id
+                    type: uuid
+                    constraints:
+                      primaryKey: true
+                      nullable: false
+              - column:
+                  name: project_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: member_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+        - addForeignKeyConstraint:
+            baseTableName: project_member_allocation
+            baseColumnNames: project_id
+            constraintName: fk_pma_project_id
+            referencedTableName: project
+            referencedColumnNames: id
+            onDelete: CASCADE
+        - addUniqueConstraint:
+            tableName: project_member_allocation
+            columnNames: project_id, member_id
+            constraintName: uk_pma_project_member
+        - createIndex:
+            tableName: project_member_allocation
+            indexName: idx_pma_member_id
+            columns:
+              - column:
+                  name: member_id
+      rollback:
+        - dropTable:
+            tableName: project_member_allocation

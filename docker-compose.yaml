@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    networks:
+      codegroup_network:
+    container_name: postgres-portfolio
+    ports:
+      - 5432:5432
+    shm_size: 128mb
+    environment:
+      POSTGRES_USER: CodeGroup
+      POSTGRES_PASSWORD: CodeGroup
+      POSTGRES_DB: portfolio
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+
+networks:
+  codegroup_network:

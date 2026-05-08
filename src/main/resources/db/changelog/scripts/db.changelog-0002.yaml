@@ -1,0 +1,81 @@
+databaseChangeLog:
+  - changeSet:
+      id: "0002"
+      author: Thiago Spindola
+      comment: Create the project table. manager_id stores the external member identifier without a foreign key, since member belongs to a separate bounded context accessed via MemberClient.
+      changes:
+        - createTable:
+            tableName: project
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: init_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_preview_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_real_date
+                  type: date
+                  constraints:
+                    nullable: true
+              - column:
+                  name: total_budget
+                  type: decimal(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: text
+                  constraints:
+                    nullable: true
+              - column:
+                  name: actual_status
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: manager_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: timestamp
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: timestamp
+                  constraints:
+                    nullable: true
+        - createIndex:
+            tableName: project
+            indexName: idx_project_manager_id
+            columns:
+              - column:
+                  name: manager_id
+        - createIndex:
+            tableName: project
+            indexName: idx_project_actual_status
+            columns:
+              - column:
+                  name: actual_status
+      rollback:
+        - dropTable:
+            tableName: project
